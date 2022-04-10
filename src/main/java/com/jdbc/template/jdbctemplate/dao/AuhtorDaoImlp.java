@@ -1,36 +1,40 @@
 package com.jdbc.template.jdbctemplate.dao;
 
 import com.jdbc.template.jdbctemplate.domain.Author;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 @Component
-public class AuhtorDaoImlp implements AuhtorDao{
+public class AuhtorDaoImlp implements AuhtorDao {
 
-   //jdbc template
+    // EntityManagerFactory
     // DI
     /*
     DI With constructor and used private final
      */
+    private final EntityManagerFactory emf;
 
-    private final JdbcTemplate jdbcTemplate;
-
-    public AuhtorDaoImlp(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public AuhtorDaoImlp(EntityManagerFactory emf) {
+        this.emf = emf;
     }
 
 
     @Override
     public Author getById(Long id) {
-        return this.jdbcTemplate.queryForObject("SELECT * FROM author where id=?",getRowMapper(),id);
+        return getEntityManager().find(Author.class, id);
+
     }
 
     @Override
     public Author findAuthorByName(String firstname, String lastName) {
-        return this.jdbcTemplate.queryForObject("SELECT * FROM author where first_name= ? and last_name =?  ",getRowMapper(),firstname,lastName);
+        TypedQuery<Author> query = getEntityManager().createQuery("SELECT a from Author a where a.firstName = :firstname and a.lastName= :lastName", Author.class);
+        query.setParameter("firstname", firstname);
+        query.setParameter("lastName", lastName);
+        return query.getSingleResult();
     }
 
     @Override
@@ -49,7 +53,12 @@ public class AuhtorDaoImlp implements AuhtorDao{
     }
 
 
-    private RowMapper<Author> getRowMapper(){
+    private RowMapper<Author> getRowMapper() {
         return new AuthorMapper();
+    }
+
+
+    private EntityManager getEntityManager() {
+        return emf.createEntityManager();
     }
 }

@@ -23,15 +23,17 @@ class AuhtorDaoImlpTest {
 
     @Test
     void getById() {
-        Author author= auhtorDao.getById(1L);
-        assertThat(author.getId()).isNotNull();
+        Author author=auhtorDao.getById(2L);
+        assertThat(author).isNotNull();
+
 
     }
 
     @Test
     void findAuthorByName() {
-        Author author =auhtorDao.findAuthorByName("aymen","braiek");
+        Author author=auhtorDao.findAuthorByName("amine","mhairhi");
         assertThat(author).isNotNull();
+        assertThat(author.getFirstName()).isEqualTo("amine");
     }
 
     @Test
