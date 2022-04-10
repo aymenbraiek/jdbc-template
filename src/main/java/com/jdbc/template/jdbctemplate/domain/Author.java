@@ -2,10 +2,7 @@ package com.jdbc.template.jdbctemplate.domain;
 
 import javax.persistence.*;
 
-@NamedQueries( {
-        @NamedQuery(name = "author_find_all", query = "FROM Author"),
-        @NamedQuery(name= "find_by_name" ,query ="FROM Author a where a.firtName = :first_name and a.lastName= : last_name")
-})
+
 @Entity
 public class Author {
     @Id

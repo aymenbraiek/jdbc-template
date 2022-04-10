@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface AuhtorDao {
 
-    Author getById(Long id);
+    Optional<Author> getById(Long id);
 
     Author findAuthorByName(String firstname, String lastName);
 
