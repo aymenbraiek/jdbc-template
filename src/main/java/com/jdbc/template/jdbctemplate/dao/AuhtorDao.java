@@ -3,7 +3,6 @@ package com.jdbc.template.jdbctemplate.dao;
 import com.jdbc.template.jdbctemplate.domain.Author;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface AuhtorDao {
 

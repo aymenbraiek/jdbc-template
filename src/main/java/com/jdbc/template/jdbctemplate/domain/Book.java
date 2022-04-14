@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-public class book {
+public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +17,10 @@ public class book {
     private String authorId;
 
 
-    public book() {
+    public Book() {
     }
 
-    public book(Long id, String title, String publisher, String authorId) {
+    public Book(Long id, String title, String publisher, String authorId) {
         this.id = id;
         this.title = title;
         this.publisher = publisher;
@@ -73,7 +73,7 @@ public class book {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        book book = (book) o;
+        Book book = (Book) o;
         return Objects.equals(id, book.id) && Objects.equals(title, book.title) && Objects.equals(publisher, book.publisher) && Objects.equals(authorId, book.authorId);
     }
 

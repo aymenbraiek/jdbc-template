@@ -4,9 +4,11 @@ import com.jdbc.template.jdbctemplate.domain.Author;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.Queue;
 
 @Component
 public class AuhtorDaoImlp implements AuhtorDao {
@@ -25,24 +27,34 @@ public class AuhtorDaoImlp implements AuhtorDao {
 
     @Override
     public Author getById(Long id) {
-
-return null;
+        EntityManager entityManager = getEntityManager();
+        Author author = getEntityManager().find(Author.class, id);
+        entityManager.close();
+        return author;
     }
 
     @Override
     public Author findAuthorByName(String firstname, String lastName) {
-        EntityManager em =getEntityManager();
-        TypedQuery<Author> typedQuery = em.createNamedQuery("find_by_name",Author.class);
-        typedQuery.setParameter("firt_name",firstname);
-        typedQuery.setParameter("last_name",lastName);
-        Author author=typedQuery.getSingleResult();
+        EntityManager em = getEntityManager();
+        TypedQuery<Author> typedQuery = em.createQuery("select a from Author a where a.firstName =:first_name and a.lastName=: last_name", Author.class);
+        typedQuery.setParameter("first_name", firstname);
+        typedQuery.setParameter("last_name", lastName);
+
+        System.out.println(firstname + "--------" + lastName);
+        Author author = typedQuery.getSingleResult();
         em.close();
-        return  author;
+        return author;
     }
 
     @Override
     public Author saveNewAuthor(Author author) {
-        return null;
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        em.persist(author);
+        em.flush();
+        em.getTransaction().commit();
+        em.close();
+        return author;
     }
 
     @Override
